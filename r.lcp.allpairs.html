@@ -1,0 +1,85 @@
+<div class="toc">
+<h4 class="toc">Table of contents</h4>
+<ul class="toc">
+    <li class="toc"><a href="#description" class="toc">DESCRIPTION</a>
+    <li class="toc"><a href="#notes" class="toc">NOTES</a></li>
+    <li class="toc"><a href="#examples" class="toc">EXAMPLES</a></li>
+    <li class="toc"><a href="#see-also" class="toc">SEE ALSO</a></li>
+    <li class="toc"><a href="#author" class="toc">AUTHOR</a></li>
+</ul>
+</div>
+
+<h2><a name="description">DESCRIPTION</a></h2>
+
+<em>r.lcp.allpairs</em> creates least-cost vector paths from each pair of
+input vector points. The module uses either r.cost or r.walk to compute
+the cumulative cost of moving between the pair of locations. The resulting
+output is then used as input to trace the flow of least-cost movement with
+r.drain. The resulting least-cost path vector outputs are appended to obtain
+a vector output map resembling a network.
+
+<h2><a name="notes">NOTES</a></h2>
+
+The module uses r.cost by default. The use of r.walk is enabled via flag.
+<p>During the computation, both r.cost and r.walk computes by default rasters 
+representing the movement direction too, besides the rasters showing the cumulative 
+cost of movement. The movement direction rasters are also taken into account when
+running r.drain.
+<p>The raster outputs that r.cost/r.walk and r.drain produces are all discarded
+during each iteration, after no longer needed. The individual least-cost vector
+paths are also removed after being appended. This procedure increases the
+computation time necessary for obtaining the final output, but it saves up memory
+space. That is especially important when using a very high number of input points.
+<p>The minimum number of input points necessary to run the module is two. The
+maximum limit is unknown, but immense numbers of input points would increase
+computation times just as much.
+
+<h2><a name="examples">EXAMPLES</a></h2>
+
+<h3>Generating vector output with r.cost</h3>
+
+To obtain vector output with the "knight's move" enabled:<br>
+<div class="code"><pre>
+r.lcp.allpairs -k input=points frict=frictRast output=vectOutput
+</pre></div>
+
+<h3>Generating vector output with r.walk</h3>
+
+To obtain vector output with the "knight's move" disabled:<br>
+<div class="code"><pre>
+r.lcp.allpairs -w input=points frict=frictRast output=vectOutput elev=DEM_raster
+</pre></div>
+
+To obtain vector output with the "knight's move" enabled, and with non-default
+walking coefficients for the walking formula:<br>
+<div class="code"><pre>
+r.lcp.allpairs -w -k input=points frict=frictRast output=vectOutput elev=DEM_raster 
+a=0.80 b=5.0 c=1.9798 d=-1.9498 l=2.0 s=-0.2122
+</pre></div>
+
+
+<h2><a name="see-also">SEE ALSO</a></h2>
+
+<em>
+<a href="r.cost.html">r.cost</a>,
+<a href="r.walk.html">r.walk</a>,
+<a href="r.drain.html">r.drain</a>,
+<a href="v.patch.html">v.patch</a>,
+<a href="v.clean.html">v.clean</a>,
+<a href="g.remove.html">g.remove</a>
+</em>
+
+
+<h2><a name="author">AUTHOR</a></h2>
+
+Nagy Edmond
+
+<p><i>Last changed: $Date: 2017-12-18 18:46:26 +0000 (Fr, 18 Dec 2017) $</i>
+<p>
+<a href="http://grass.osgeo.org">GRASS Development Team</a>,
+GRASS GIS 7.0.4 Reference Manual
+</p>
+
+</div>
+</body>
+</html>
